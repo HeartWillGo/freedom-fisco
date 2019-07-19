@@ -1,0 +1,174 @@
+body, ul, ol, p, h1, h2, h3, h4, h5, dl, dd, form, input, textarea, td, th, button, strong {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    vertical-align: top;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+
+img {
+    border: none;
+    vertical-align: middle;
+}
+
+em {
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+.viewport {
+    max-width: 1080px;
+    min-width: 300px;
+    margin: 0 auto;
+}
+
+.scoreTitle {
+    width: 100%;
+    height: 1.54rem;
+}
+
+.scoreTitle a {
+    font-family: MI-LANTING--GBK1-Bold;
+    font-size: 0.48rem;
+    color: #000000;
+    text-align: center;
+    margin-left: 2.96rem;
+    line-height: 1.54rem;
+}
+
+.myScoreReturn {
+    width: 1.2rem;
+    margin-left: 0.28rem;
+}
+
+.myInfoBackground {
+    height: 4.5rem;
+    background: url(../images/myScore.png) center center no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+
+.imagesIcon {
+    border-radius: 50%;
+    top: 0.4rem;
+
+}
+
+.myInfoLeft {
+    width: 30%;
+    text-align: center;
+    float: left;
+    color: #FFFFFF;
+    margin-top: 1.56rem;
+}
+
+.infoTag {
+    font-family: MI-LANTING--GBK1-Light;
+    font-size: 0.33rem;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    line-height: 0.33rem;
+}
+
+.infoTagValue {
+    font-family: Jinrong01-Bold;
+    font-size: 0.69rem;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    line-height: 0.69rem;
+    margin-top: 0.3104rem;
+}
+
+.infoTagValue a {
+    font-family: Jinrong01-Bold;
+    font-size: 0.69rem;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    line-height: 0.69rem;
+}
+
+.myInfoMid {
+    width: 40%;
+    text-align: center;
+    float: left;
+    color: #FFFFFF;
+    margin-top: 1.56rem;
+}
+
+.myInfoRight {
+    width: 30%;
+    text-align: center;
+    float: left;
+    color: #FFFFFF;
+    margin-top: 1.56rem;
+}
+#challegeCount{
+    font-family: Jinrong01-Bold;
+}
+#moneyCount{
+    font-family: Jinrong01-Bold;
+}
+#dayNum{
+    font-family: Jinrong01-Bold;
+}
+.scoreList {
+    height: 1.01rem;
+    width: 100%;
+}
+
+.scoreList a {
+    margin-left: 0.9rem;
+    font-family: MI-LANTING_GB-OUTSIDE-YS;
+    font-size: 0.36rem;
+    color: #9B9B9B;
+    line-height: 1.01rem;
+}
+
+.historyInfo {
+    height: 500px;
+    background: #FFFFFF;
+
+}
+
+.point {
+    width: 10%;
+    float: left;
+    text-align: center;
+}
+
+.point canvas {
+    width: 100%;
+}
+
+.stepInfo {
+    float: left;
+    width: 20%;
+}
+
+.moneyInfo {
+    float: left;
+    width: 30%;
+    text-align: center;
+}
+
+.timeInfo {
+    float: right;
+    width: 30%;
+    text-align: center;
+
+}

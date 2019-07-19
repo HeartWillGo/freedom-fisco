@@ -1,0 +1,27 @@
+.modal-dialog {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    height: 100%;
+}
+
+.modal-body {
+    padding: 0 !important;
+}
+
+.shutdownIcon {
+
+    padding: 0.4rem !important;
+
+}
+
+.modal-header {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.modal-backdrop {
+    filter: alpha(opacity=0) !important;
+    opacity: 0 !important;
+}
+

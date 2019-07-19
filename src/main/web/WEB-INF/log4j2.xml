@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <RollingRandomAccessFile name="${service_name}-log"
+                                 fileName="/home/work/log/${service_name}/${service_name}.log"
+                                 filePattern="/home/work/log/${service_name}/${service_name}.log.%d{yyyyMMddHH}.gz"
+                                 append="true" immediateFlush="false">
+            <PatternLayout
+                    pattern="[%-5p %d{yyyy-MM-dd HH:mm:ss.SSS}] [%t] [%X{SessionId}] [%C{1}.%M:%L] [%m]%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="${service_name}-exception-log"
+                                 fileName="/home/work/log/${service_name}/${service_name}.log.wf"
+                                 filePattern="/home/work/log/${service_name}/${service_name}.log.wf.%d{yyyyMMddHH}.gz"
+                                 append="true" immediateFlush="false">
+            <PatternLayout
+                    pattern="[%-5p %d{yyyy-MM-dd HH:mm:ss.SSS}] [%t] [%X{SessionId}] [%C{1}.%M:%L] [%m]%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <Scribe name="${service_name}-scribeAppender" scribeCategory="miui_${service_name}">
+            <PatternLayout
+                    pattern="[%-5p %d{yyyy-MM-dd HH:mm:ss.SSS}] [%t] [%X{SessionId}] [%C{1}.%M:%L] [%m]%n"/>
+        </Scribe>
+
+        <Scribe name="${service_name}-exception-scribeAppender" scribeCategory="miui_${service_name}_exception">
+            <PatternLayout
+                    pattern="[%-5p %d{yyyy-MM-dd HH:mm:ss.SSS}] [%t] [%X{SessionId}] [%C{1}.%M:%L] [%m]%n"/>
+        </Scribe>
+    </Appenders>
+
+    <Loggers>
+        <asyncRoot level="${log_level}" includeLocation="true">
+            <AppenderRef ref="${service_name}-log"/>
+            <AppenderRef ref="${service_name}-scribeAppender"/>
+            <AppenderRef ref="${service_name}-exception-log" level="error"/>
+            <AppenderRef ref="${service_name}-exception-scribeAppender" level="error"/>
+        </asyncRoot>
+    </Loggers>
+
+</Configuration>
