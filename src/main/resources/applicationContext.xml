@@ -5,10 +5,10 @@
 	   xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
-         http://www.springframework.org/schema/tx   
-    http://www.springframework.org/schema/tx/spring-tx-2.5.xsd  
-         http://www.springframework.org/schema/aop   
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+         http://www.springframework.org/schema/aop
     http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 
@@ -23,7 +23,7 @@
 					<property name="groupId" value="1" />
 					<property name="connectionsStr">
 						<list>
-							<value>127.0.0.1:20200</value>
+							<value>10.0.1.83:20200</value>
 						</list>
 					</property>
 				</bean>
@@ -33,7 +33,7 @@
 
 	<bean id="channelService" class="org.fisco.bcos.channel.client.Service" depends-on="groupChannelConnectionsConfig">
 		<property name="groupId" value="1" />
-		<property name="orgID" value="fisco" />
+		<property name="agencyName" value="fisco" />
 		<property name="allChannelConnections" ref="groupChannelConnectionsConfig"></property>
 	</bean>
 
