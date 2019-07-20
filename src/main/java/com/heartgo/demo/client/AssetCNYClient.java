@@ -2,8 +2,7 @@ package com.heartgo.demo.client;
 
 
 
-import org.fisco.bcos.asset.contract.Asset;
-import org.fisco.bcos.asset.contract.Asset_CNYK;
+import com.heartgo.demo.contract.Asset_CNY;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -99,7 +98,7 @@ public class AssetCNYClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			Asset_CNY asset = Asset_CNY.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
 
 			recordAssetAddr(asset.getContractAddress());
@@ -114,7 +113,7 @@ public class AssetCNYClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_CNY asset = Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, BigInteger> result = asset.select(assetAccount).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
 				return result.getValue2().longValue();
@@ -135,9 +134,9 @@ public class AssetCNYClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_CNY asset = Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.register(assetAccount, amount).send();
-			List<org.fisco.bcos.asset.contract.Asset_CNY.RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
+			List<Asset_CNY.RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" register asset account success => asset: %s, value: %s \n", assetAccount,
@@ -161,9 +160,9 @@ public class AssetCNYClient {
 	public void transferAsset(String fromAssetAccount, String toAssetAccount, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
-			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_CNY asset = Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.transfer(fromAssetAccount, toAssetAccount, amount).send();
-			List<org.fisco.bcos.asset.contract.Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
+			List<Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" transfer success => from_asset: %s, to_asset: %s, amount: %s \n",
@@ -186,9 +185,9 @@ public class AssetCNYClient {
 	public void update(String accountId, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
-			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_CNY asset = Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.update(accountId,  amount).send();
-			List<org.fisco.bcos.asset.contract.Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
+			List<Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 
