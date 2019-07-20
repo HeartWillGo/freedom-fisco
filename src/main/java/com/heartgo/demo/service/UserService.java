@@ -12,10 +12,16 @@ public class UserService {
 
 
     public RESULT registerUser(User user) {
+
         return userInfoClient.registerUser(user);
     }
 
-    public String queryUser(String userId) {
+    public boolean isUserExits(String userId) {
+        return (null != queryUserById(userId));
+
+    }
+
+    public User queryUserById(String userId) {
         return userInfoClient.queryUserInfo(userId);
     }
 }

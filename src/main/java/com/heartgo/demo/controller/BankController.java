@@ -7,6 +7,7 @@ import com.heartgo.demo.model.BackendResult;
 import com.heartgo.demo.model.Bank;
 import com.heartgo.demo.model.RESULT;
 import com.heartgo.demo.service.BankService;
+import com.heartgo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +21,15 @@ public class BankController {
     @Autowired
     private BankService bankService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("bindBank")
     public String saveBank(Bank bank) throws Exception {
         if (isParamEmpty(bank)) {
             return JSON.toJSONString(new BackendResult(BANK_EMPTY_INFO));
         }
+
         RESULT result = bankService.saveBankInfo(bank);
         return JSON.toJSONString(new BackendResult(result));
     }

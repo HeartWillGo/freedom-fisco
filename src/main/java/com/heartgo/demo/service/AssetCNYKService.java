@@ -1,6 +1,7 @@
 package com.heartgo.demo.service;
 
 import com.heartgo.demo.client.AssetCNYKClient;
+import com.heartgo.demo.model.RESULT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,9 @@ public class AssetCNYKService {
     @Autowired
     private AssetCNYKClient assetCNYKClient;
 
-
+//    public RESULT registAccount(String userId,String cnykAccount)
+//    {
+//    }
 
     public boolean update(String account, Long change) {
         try {

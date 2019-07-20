@@ -39,25 +39,24 @@ public class UserController {
         }
 
         RESULT res = userService.registerUser(user);
+
+
         return JSON.toJSONString(new BackendResult(res));
     }
 
     @PostMapping("login")
-    public String loginUser(User user) throws Exception {
-        if (isUserParamsEmpty(user)) {
+    public String loginUser(User inUser) throws Exception {
+        if (isUserParamsEmpty(inUser)) {
             return JSON.toJSONString(new BackendResult(USER_EMPTY_INFO));
         }
-        String inUserId = user.getUserId();
-        String inPassWord = user.getPassWord();
-        String userInfStr = userService.queryUser(inUserId);
-        if (null == userInfStr || userInfStr.isEmpty()) {
+        String inUserId = inUser.getUserId();
+        if (!userService.isUserExits(inUser.getUserId())) {
             return JSON.toJSONString(new BackendResult(USER_NOT_EXIST));
         }
-
-        String truePwd = JSON.parseObject(userInfStr).getString("passWord");
+        User trueUser = userService.queryUserById(inUser.getUserId());
 
         //正确性校验
-        if (!inPassWord.equals(truePwd)) {
+        if (!inUser.getPassWord().equals(trueUser.getPassWord())) {
             return JSON.toJSONString(new BackendResult(USER_PASSWORD_INCRRECT));
         }
         return JSON.toJSONString(new BackendResult(OK));
@@ -66,17 +65,8 @@ public class UserController {
     @GetMapping("queryUser")
     public String queryUser(String userId) throws Exception {
         BackendResult res = new BackendResult();
-
-        String userinfo = userService.queryUser(userId);
-        if (null == userinfo || userinfo.isEmpty()) {
-            res.setCode(-1);
-            res.setMsg("user doesn't exist");
-
-        } else {
-            res.setCode(200);
-            res.setMsg(userinfo);
-        }
-        return JSON.toJSONString(res);
+        User user = userService.queryUserById(userId);
+        return JSON.toJSONString(user);
     }
 
 

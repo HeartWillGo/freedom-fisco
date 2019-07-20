@@ -105,27 +105,24 @@ public class UserInfoClient {
 
             recordAssetAddr(asset.getContractAddress());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             System.out.println(" deploy Asset contract failed, error message is  " + e.getMessage());
         }
     }
 
-    public String queryUserInfo(String userId) {
+    public User queryUserInfo(String userId) {
         try {
             String contractAddress = loadAssetAddr();
 
             UserInfo userInfo = UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
             Tuple2<BigInteger, String> result = userInfo.select(userId).send();
             if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
-                System.out.printf(" UserInfot %s, value %s \n", userId, result.getValue2());
-            } else {
                 System.out.printf(" %s UserInfo is not exist \n", userId);
+                return null;
             }
-            return result.getValue2();
+            System.out.printf(" UserInfot %s, value %s \n", userId, result.getValue2());
+            return (User) JSON.parse(result.getValue2());
+
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
             logger.error(" queryUserInfo exception, error message is {}", e.getMessage());
 
             System.out.printf(" queryUserInfofailed, error message is %s\n", e.getMessage());

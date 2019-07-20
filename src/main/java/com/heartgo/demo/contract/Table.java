@@ -72,7 +72,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_REMOVE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -81,7 +81,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_REMOVE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -90,7 +90,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_REMOVE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -99,7 +99,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_INSERT, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -108,7 +108,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_INSERT, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -117,7 +117,7 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_INSERT, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -133,8 +133,8 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_UPDATE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param2)), 
+                new Address(param1),
+                new Address(param2)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -143,8 +143,8 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_UPDATE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param2)), 
+                new Address(param1),
+                new Address(param2)),
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -153,8 +153,8 @@ public class Table extends Contract {
         final Function function = new Function(
                 FUNC_UPDATE, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param2)), 
+                new Address(param1),
+                new Address(param2)),
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -162,7 +162,7 @@ public class Table extends Contract {
     public RemoteCall<String> select(String param0, String param1) {
         final Function function = new Function(FUNC_SELECT, 
                 Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(param0), 
-                new org.fisco.bcos.web3j.abi.datatypes.Address(param1)), 
+                new Address(param1)),
                 Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
         return executeRemoteCallSingleValueReturn(function, String.class);
     }
