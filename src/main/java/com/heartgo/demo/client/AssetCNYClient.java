@@ -2,8 +2,8 @@ package com.heartgo.demo.client;
 
 
 
-import jnr.ffi.Struct;
 import org.fisco.bcos.asset.contract.Asset;
+import org.fisco.bcos.asset.contract.Asset_CNYK;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -26,9 +26,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
 
-public class AssetClient {
+public class AssetCNYClient {
 
-	static Logger logger = LoggerFactory.getLogger(AssetClient.class);
+	static Logger logger = LoggerFactory.getLogger(AssetCNYClient.class);
 
 	private Web3j web3j;
 
@@ -52,7 +52,7 @@ public class AssetClient {
 
 	public void recordAssetAddr(String address) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		prop.setProperty("address", address);
+		prop.setProperty("asset_cny_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
 		prop.store(fileOutputStream, "contract address");
@@ -114,7 +114,7 @@ public class AssetClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, BigInteger> result = asset.select(assetAccount).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
 				System.out.printf(" asset account %s, value %s \n", assetAccount, result.getValue2());
@@ -134,9 +134,9 @@ public class AssetClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.register(assetAccount, amount).send();
-			List<Asset.RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
+			List<org.fisco.bcos.asset.contract.Asset_CNY.RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" register asset account success => asset: %s, value: %s \n", assetAccount,
@@ -160,9 +160,9 @@ public class AssetClient {
 	public void transferAsset(String fromAssetAccount, String toAssetAccount, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
-			Asset asset = Asset.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.transfer(fromAssetAccount, toAssetAccount, amount).send();
-			List<Asset.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
+			List<org.fisco.bcos.asset.contract.Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" transfer success => from_asset: %s, to_asset: %s, amount: %s \n",
@@ -232,5 +232,14 @@ public class AssetClient {
 //
 //		System.exit(0);
 //	}
+public static void main(String[] args) throws Exception {
 
+
+	AssetCNYClient client = new AssetCNYClient();
+	client.initialize();
+	client.deployAssetAndRecordAddr();
+	client.registerAssetAccount("Alice3", new BigInteger("2322"));
+	client.queryAssetAmount("Alice3");
+
+}
 }

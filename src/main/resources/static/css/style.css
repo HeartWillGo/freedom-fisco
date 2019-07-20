@@ -42,14 +42,26 @@ a {
 }
 
 .topInfo {
-    height: 12.79rem;
-    background: url(../images/backgroundIndex.png) center center no-repeat;
+    height: 26rem;
+    background: url(../icon/background.png) center center no-repeat;
     background-size: cover;
 
 }
 
 .headerDiv {
-    height: 1.84rem;
+    height: 10rem;
+
+
+
+}
+.myAccountName{
+    text-align: center;
+    color: #FFFFFF;
+    height: 10rem;
+    font-size: 1rem;
+    position: absolute;
+    top: 50%;
+    left:50%
 }
 
 .rule {
