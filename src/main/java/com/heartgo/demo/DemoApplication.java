@@ -3,6 +3,7 @@ package com.heartgo.demo;
 import com.heartgo.demo.client.*;
 import com.heartgo.demo.service.AssetCNYKService;
 import com.heartgo.demo.service.AssetCNYService;
+import com.heartgo.demo.service.BankService;
 import com.heartgo.demo.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -86,4 +87,7 @@ public class DemoApplication {
         return new UserService();
     }
 
+
+    @Bean
+    public BankService bankService(){return new BankService();}
 }

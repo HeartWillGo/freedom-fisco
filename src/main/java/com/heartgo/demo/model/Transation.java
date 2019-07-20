@@ -1,6 +1,6 @@
 package com.heartgo.demo.model;
 
-public class TransationInfo {
+public class Transation {
     private String fromId;
     private String toId;
     private Integer action;

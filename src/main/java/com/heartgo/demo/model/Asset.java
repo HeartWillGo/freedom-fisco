@@ -1,6 +1,6 @@
 package com.heartgo.demo.model;
 
-public class AssetInfo {
+public class Asset {
     private String assetId;
     private long amount;
 

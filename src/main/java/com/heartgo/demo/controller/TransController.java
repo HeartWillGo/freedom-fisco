@@ -2,10 +2,8 @@ package com.heartgo.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.heartgo.demo.client.AssetCNYClient;
-import com.heartgo.demo.model.CommonResult;
-import com.heartgo.demo.model.TransationInfo;
+import com.heartgo.demo.model.BackendResult;
+import com.heartgo.demo.model.Transation;
 import com.heartgo.demo.service.AssetCNYKService;
 import com.heartgo.demo.service.AssetCNYService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +39,8 @@ public class TransController {
      * @return
      */
     @PostMapping("cny2cnyk")
-    public String Cny2Cnyk(TransationInfo tInfo) {
-        CommonResult res = new CommonResult();
+    public String Cny2Cnyk(Transation tInfo) {
+        BackendResult res = new BackendResult();
 
         if (null == tInfo.getFromId() ||
                 tInfo.getFromId().isEmpty() ||
@@ -69,9 +67,9 @@ public class TransController {
     }
 
     @PostMapping("cnyk2cny")
-    public String Cnyk2Cny(TransationInfo tInfo) {
+    public String Cnyk2Cny(Transation tInfo) {
 
-        CommonResult res = new CommonResult();
+        BackendResult res = new BackendResult();
 
         if (null == tInfo.getFromId() ||
                 tInfo.getFromId().isEmpty() ||
@@ -98,9 +96,9 @@ public class TransController {
     }
 
     @PostMapping("cnyk2cnyk")
-    public String Cnyk2Cnyk(TransationInfo tInfo) {
+    public String Cnyk2Cnyk(Transation tInfo) {
 
-        CommonResult res = new CommonResult();
+        BackendResult res = new BackendResult();
 
         if (null == tInfo.getFromId() ||
                 tInfo.getFromId().isEmpty() ||
