@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.heartgo.demo.client.AssetClient;
 import com.heartgo.demo.client.UserInfoClient;
 import com.heartgo.demo.model.User;
+import com.heartgo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,9 @@ public class UserController {
     @Autowired
     private UserInfoClient userInfoClient;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 注册用户,提供: 1. 账号  2. 密码
      *
@@ -36,7 +40,14 @@ public class UserController {
     public String registUser(User user) throws Exception {
         if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty())
             return "failed";
+        user.setUserPhone(user.getUserId());
+        user.setIdCard(userService.getUUID());
+        user.setBankId(userService.getUUID());
+        user.setCNYID(userService.getUUID());
+        user.setCNYKID(userService.getUUID());
+        user.setDepositID(userService.getUUID());
         userInfoClient.registerUser(user.getUserId(), user);
+
         return "success";
 
     }

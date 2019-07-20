@@ -9,4 +9,8 @@ public class AssetCNYKService {
     @Autowired
     private AssetCNYKService assetCNYKService;
 
+    public void save() {
+
+    }
+
 }

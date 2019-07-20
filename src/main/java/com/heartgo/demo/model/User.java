@@ -51,4 +51,36 @@ public class User
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
+    }
+
+    public String getCNYKID() {
+        return CNYKID;
+    }
+
+    public void setCNYKID(String CNYKID) {
+        this.CNYKID = CNYKID;
+    }
+
+    public String getCNYID() {
+        return CNYID;
+    }
+
+    public void setCNYID(String CNYID) {
+        this.CNYID = CNYID;
+    }
+
+    public String getDepositID() {
+        return depositID;
+    }
+
+    public void setDepositID(String depositID) {
+        this.depositID = depositID;
+    }
 }

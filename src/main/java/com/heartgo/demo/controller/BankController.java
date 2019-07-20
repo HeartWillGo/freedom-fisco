@@ -15,6 +15,7 @@ public class BankController {
 
     @Autowired
     private BankInfoClient bankInfoClient;
+
     @PostMapping("saveBank")
     public void saveBank(@RequestBody Bank bank) throws Exception{
 

@@ -10,5 +10,7 @@ public class AssetCNYService {
     private AssetCNYService assetCNYCService;
 
 
+    public void save() {
+    }
 
 }

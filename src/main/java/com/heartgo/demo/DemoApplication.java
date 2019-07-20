@@ -1,6 +1,9 @@
 package com.heartgo.demo;
 
 import com.heartgo.demo.client.*;
+import com.heartgo.demo.service.AssetCNYKService;
+import com.heartgo.demo.service.AssetCNYService;
+import com.heartgo.demo.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -57,4 +60,20 @@ public class DemoApplication {
         assetCNYKClient.deployAssetAndRecordAddr();
         return assetCNYKClient;
     }
+
+    @Bean
+    public AssetCNYKService assetCNYKService() {
+        return new AssetCNYKService();
+    }
+
+    @Bean
+    public AssetCNYService assetCNYService() {
+        return new AssetCNYService();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserService();
+    }
+
 }
