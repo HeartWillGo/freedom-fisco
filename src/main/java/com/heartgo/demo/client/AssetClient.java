@@ -183,6 +183,9 @@ public class AssetClient {
 		}
 	}
 
+
+
+
 	public static void Usage() {
 		System.out.println(" Usage:");
 		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient deploy");

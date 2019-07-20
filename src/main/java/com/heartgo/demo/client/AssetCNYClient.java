@@ -183,6 +183,30 @@ public class AssetCNYClient {
 			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
 		}
 	}
+	public void update(String accountId, BigInteger amount) {
+		try {
+			String contractAddress = loadAssetAddr();
+			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			TransactionReceipt receipt = asset.update(accountId,  amount).send();
+			List<org.fisco.bcos.asset.contract.Asset_CNY.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
+			if (!response.isEmpty()) {
+				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
+
+				} else {
+					System.out.printf(" transfer asset account failed, ret code is %s \n",
+							response.get(0).ret.toString());
+				}
+			} else {
+				System.out.println(" event log not found, maybe transaction not exec. ");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+
+			logger.error(" registerAssetAccount exception, error message is {}", e.getMessage());
+			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
+		}
+	}
 
 	public static void Usage() {
 		System.out.println(" Usage:");

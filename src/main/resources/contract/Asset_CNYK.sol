@@ -6,7 +6,7 @@ contract Asset_CNYK {
     // event
     event RegisterEvent(int256 ret, string account, uint256 asset_value);
     event TransferEvent(int256 ret, string from_account, string to_account, uint256 amount);
-    
+    event UpdateResult(int count);
     constructor() public {
         // 构造函数中创建t_asset表
         createTable();
@@ -171,5 +171,19 @@ contract Asset_CNYK {
         emit TransferEvent(ret_code, from_account, to_account, amount);
 
         return ret_code;
+    }
+    function update(string accountId,  uint256 amount) public returns(int256) {
+
+        Table table = openTable();
+
+        Entry entry0 = table.newEntry();
+        entry0.set("account", accountId);
+        entry0.set("asset_value", int256(amount));
+
+        int count=table.update(accountId, entry0, table.newCondition());
+
+        emit UpdateResult( count);
+
+        return count;
     }
 }
