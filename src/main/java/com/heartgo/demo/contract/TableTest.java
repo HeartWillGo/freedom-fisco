@@ -1,4 +1,4 @@
-package com.heartgo.demo.contract;
+package org.fisco.bcos.asset.contract;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;
@@ -90,9 +90,9 @@ public class TableTest extends Contract {
     public RemoteCall<TransactionReceipt> update(String name, BigInteger item_id, String item_name) {
         final Function function = new Function(
                 FUNC_UPDATE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -100,9 +100,9 @@ public class TableTest extends Contract {
     public void update(String name, BigInteger item_id, String item_name, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_UPDATE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -110,9 +110,9 @@ public class TableTest extends Contract {
     public String updateSeq(String name, BigInteger item_id, String item_name) {
         final Function function = new Function(
                 FUNC_UPDATE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -120,8 +120,8 @@ public class TableTest extends Contract {
     public RemoteCall<TransactionReceipt> remove(String name, BigInteger item_id) {
         final Function function = new Function(
                 FUNC_REMOVE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -129,8 +129,8 @@ public class TableTest extends Contract {
     public void remove(String name, BigInteger item_id, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_REMOVE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -138,8 +138,8 @@ public class TableTest extends Contract {
     public String removeSeq(String name, BigInteger item_id) {
         final Function function = new Function(
                 FUNC_REMOVE, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -147,9 +147,9 @@ public class TableTest extends Contract {
     public RemoteCall<TransactionReceipt> insert(String name, BigInteger item_id, String item_name) {
         final Function function = new Function(
                 FUNC_INSERT, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -157,9 +157,9 @@ public class TableTest extends Contract {
     public void insert(String name, BigInteger item_id, String item_name, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_INSERT, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -167,9 +167,9 @@ public class TableTest extends Contract {
     public String insertSeq(String name, BigInteger item_id, String item_name) {
         final Function function = new Function(
                 FUNC_INSERT, 
-                Arrays.<Type>asList(new Utf8String(name),
-                new Int256(item_id),
-                new Utf8String(item_name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Int256(item_id), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(item_name)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -200,7 +200,7 @@ public class TableTest extends Contract {
 
     public RemoteCall<Tuple3<List<String>, List<BigInteger>, List<String>>> select(String name) {
         final Function function = new Function(FUNC_SELECT, 
-                Arrays.<Type>asList(new Utf8String(name)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(name)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<DynamicArray<Utf8String>>() {}, new TypeReference<DynamicArray<Int256>>() {}, new TypeReference<DynamicArray<Utf8String>>() {}));
         return new RemoteCall<Tuple3<List<String>, List<BigInteger>, List<String>>>(
                 new Callable<Tuple3<List<String>, List<BigInteger>, List<String>>>() {
@@ -216,9 +216,9 @@ public class TableTest extends Contract {
     }
 
     public List<CreateResultEventResponse> getCreateResultEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(CREATERESULT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(CREATERESULT_EVENT, transactionReceipt);
         ArrayList<CreateResultEventResponse> responses = new ArrayList<CreateResultEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             CreateResultEventResponse typedResponse = new CreateResultEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -231,7 +231,7 @@ public class TableTest extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, CreateResultEventResponse>() {
             @Override
             public CreateResultEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(CREATERESULT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(CREATERESULT_EVENT, log);
                 CreateResultEventResponse typedResponse = new CreateResultEventResponse();
                 typedResponse.log = log;
                 typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -247,9 +247,9 @@ public class TableTest extends Contract {
     }
 
     public List<InsertResultEventResponse> getInsertResultEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(INSERTRESULT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(INSERTRESULT_EVENT, transactionReceipt);
         ArrayList<InsertResultEventResponse> responses = new ArrayList<InsertResultEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             InsertResultEventResponse typedResponse = new InsertResultEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -262,7 +262,7 @@ public class TableTest extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, InsertResultEventResponse>() {
             @Override
             public InsertResultEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(INSERTRESULT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(INSERTRESULT_EVENT, log);
                 InsertResultEventResponse typedResponse = new InsertResultEventResponse();
                 typedResponse.log = log;
                 typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -278,9 +278,9 @@ public class TableTest extends Contract {
     }
 
     public List<UpdateResultEventResponse> getUpdateResultEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(UPDATERESULT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(UPDATERESULT_EVENT, transactionReceipt);
         ArrayList<UpdateResultEventResponse> responses = new ArrayList<UpdateResultEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             UpdateResultEventResponse typedResponse = new UpdateResultEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -293,7 +293,7 @@ public class TableTest extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, UpdateResultEventResponse>() {
             @Override
             public UpdateResultEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(UPDATERESULT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(UPDATERESULT_EVENT, log);
                 UpdateResultEventResponse typedResponse = new UpdateResultEventResponse();
                 typedResponse.log = log;
                 typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -309,9 +309,9 @@ public class TableTest extends Contract {
     }
 
     public List<RemoveResultEventResponse> getRemoveResultEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(REMOVERESULT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(REMOVERESULT_EVENT, transactionReceipt);
         ArrayList<RemoveResultEventResponse> responses = new ArrayList<RemoveResultEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             RemoveResultEventResponse typedResponse = new RemoveResultEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -324,7 +324,7 @@ public class TableTest extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, RemoveResultEventResponse>() {
             @Override
             public RemoveResultEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(REMOVERESULT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(REMOVERESULT_EVENT, log);
                 RemoveResultEventResponse typedResponse = new RemoveResultEventResponse();
                 typedResponse.log = log;
                 typedResponse.count = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();

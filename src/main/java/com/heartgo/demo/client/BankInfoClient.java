@@ -3,14 +3,18 @@ package com.heartgo.demo.client;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.heartgo.demo.model.Bank;
 import com.heartgo.demo.model.User;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
+import org.fisco.bcos.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple2;
+import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.fisco.bcos.asset.contract.BankInfo.RegisterEventEventResponse;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,9 +31,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
 
-public class UserInfoClient {
+public class BankInfoClient {
 
-	static Logger logger = LoggerFactory.getLogger(UserInfoClient.class);
+	static Logger logger = LoggerFactory.getLogger(BankInfoClient.class);
 
 	private Web3j web3j;
 
@@ -52,10 +57,10 @@ public class UserInfoClient {
 
 	public void recordAssetAddr(String address) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		prop.setProperty("user_info_address", address);
+		prop.setProperty("bankInfo_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
-		prop.store(fileOutputStream, "contract address");
+		prop.store(fileOutputStream, "bankInfo address");
 	}
 
 	public String loadAssetAddr() throws Exception {
@@ -99,10 +104,10 @@ public class UserInfoClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			org.fisco.bcos.asset.contract.UserInfo asset = org.fisco.bcos.asset.contract.UserInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
-			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
+		    org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			System.out.println(" deploy Asset success, contract address is " + bankInfo.getContractAddress());
 
-			recordAssetAddr(asset.getContractAddress());
+			recordAssetAddr(bankInfo.getContractAddress());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
@@ -110,18 +115,18 @@ public class UserInfoClient {
 		}
 	}
 
-	public String queryUserInfo(String userId) {
+	public String queryBankInfo(String bankId) {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.UserInfo userInfo = org.fisco.bcos.asset.contract.UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
-			Tuple2<BigInteger, String> result = userInfo.select(userId).send();
+			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Tuple2<BigInteger, String> result = bankInfo.select(bankId).send();
+			System.out.println("result:"+JSONObject.toJSONString(result));
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
-				System.out.printf(" UserInfot %s, value %s \n", userId, result.getValue2());
-			} else {
-				System.out.printf(" %s UserInfo is not exist \n", userId);
+
+				return result.getValue2();
 			}
-			return result.getValue2();
+			return null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
@@ -132,18 +137,19 @@ public class UserInfoClient {
 		return null;
 	}
 
-	public void registerUser(String userId, User user) {
+	public void saveBankInfo(Bank bank) {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.UserInfo userInfo = org.fisco.bcos.asset.contract.UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
-			String userJson = JSON.toJSONString(user);
-			TransactionReceipt receipt = userInfo.insert(userId, userJson).send();
-			List<org.fisco.bcos.asset.contract.UserInfo.RegisterEventEventResponse> response = userInfo.getRegisterEventEvents(receipt);
+			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+//			String userJson = JSON.toJSONString(user);
+			TransactionReceipt receipt = bankInfo.insert(bank.getBankId(),JSONObject.toJSONString(bank)).send();
+			System.out.println("receipt:"+JSONObject.toJSONString(receipt));
+
+			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
-					System.out.printf(" registerUser success => asset: %s, value: %s \n", userId,
-							userJson);
+					System.out.printf(" registerUser success => asset: %s, value: %s \n");
 				} else {
 					System.out.printf(" registerUser failed, ret code is %s \n",
 							response.get(0).ret.toString());
@@ -159,67 +165,58 @@ public class UserInfoClient {
 			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
 		}
 	}
+	public void updateBankAccount(Bank bank,Bank oldBank) {
+		try {
+			String contractAddress = loadAssetAddr();
 
+			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+//			String userJson = JSON.toJSONString(user);
+			TransactionReceipt receipt = bankInfo.updateBankAccount(bank.getBankId(), JSONObject.toJSONString(bank), JSONObject.toJSONString(oldBank)).send();
+//			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
+//			if (!response.isEmpty()) {
+//				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
+//					System.out.printf(" registerUser success => asset: %s, value: %s \n");
+//				} else {
+//					System.out.printf(" registerUser failed, ret code is %s \n",
+//							response.get(0).ret.toString());
+//				}
+//			} else {
+//				System.out.println(" event log not found, maybe transaction not exec. ");
+//			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
 
-	public static void Usage() {
-		System.out.println(" Usage:");
-		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient deploy");
-		System.out.println("\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient query account");
-		System.out.println(
-				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient register account value");
-		System.out.println(
-				"\t java -cp conf/:lib/*:apps/* org.fisco.bcos.asset.client.AssetClient transfer from_account to_account amount");
-		System.exit(0);
+			logger.error(" registerAssetAccount exception, error message is {}", e.getMessage());
+			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
+		}
 	}
 
-//	public static void main(String[] args) throws Exception {
-//
-//		if (args.length < 1) {
-//			Usage();
-//		}
-//
-//		AssetClient client = new AssetClient();
-//		client.initialize();
-//
-//		switch (args[0]) {
-//		case "deploy":
-//			client.deployAssetAndRecordAddr();
-//			break;
-//		case "query":
-//			if (args.length < 2) {
-//				Usage();
+	public void deleteBank(String bankId) {
+		try {
+			String contractAddress = loadAssetAddr();
+
+			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+//			String userJson = JSON.toJSONString(user);
+			TransactionReceipt receipt = bankInfo.remove(bankId).send();
+//			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
+//			if (!response.isEmpty()) {
+//				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
+//					System.out.printf(" registerUser success => asset: %s, value: %s \n");
+//				} else {
+//					System.out.printf(" registerUser failed, ret code is %s \n",
+//							response.get(0).ret.toString());
+//				}
+//			} else {
+//				System.out.println(" event log not found, maybe transaction not exec. ");
 //			}
-//			client.queryAssetAmount(args[1]);
-//			break;
-//		case "register":
-//			if (args.length < 3) {
-//				Usage();
-//			}
-//			client.registerAssetAccount(args[1], new BigInteger(args[2]));
-//			break;
-//		case "transfer":
-//			if (args.length < 4) {
-//				Usage();
-//			}
-//			client.transferAsset(args[1], args[2], new BigInteger(args[3]));
-//			break;
-//		default: {
-//			Usage();
-//		}
-//		}
-//
-//		System.exit(0);
-//	}
-	public static void main(String[] args)throws Exception{
-		UserInfoClient userInfoClient=new UserInfoClient();
-		userInfoClient.initialize();
-		userInfoClient.deployAssetAndRecordAddr();
-		User user=new User();
-		user.setIdCard("344222667");
-		user.setPassWord("9999");
-		user.setUserPhone("134266");
-		userInfoClient.registerUser("heartgo",user);
-		userInfoClient.queryUserInfo("heartgo");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+
+			logger.error(" registerAssetAccount exception, error message is {}", e.getMessage());
+			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
+		}
 	}
 
 }

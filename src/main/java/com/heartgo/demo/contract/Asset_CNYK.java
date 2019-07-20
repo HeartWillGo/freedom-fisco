@@ -1,4 +1,4 @@
-package com.heartgo.demo.contract;
+package org.fisco.bcos.asset.contract;
 
 import io.reactivex.Flowable;
 import java.math.BigInteger;
@@ -78,9 +78,9 @@ public class Asset_CNYK extends Contract {
     public RemoteCall<TransactionReceipt> transfer(String from_account, String to_account, BigInteger amount) {
         final Function function = new Function(
                 FUNC_TRANSFER, 
-                Arrays.<Type>asList(new Utf8String(from_account),
-                new Utf8String(to_account),
-                new Uint256(amount)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(from_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(to_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(amount)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -88,9 +88,9 @@ public class Asset_CNYK extends Contract {
     public void transfer(String from_account, String to_account, BigInteger amount, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_TRANSFER, 
-                Arrays.<Type>asList(new Utf8String(from_account),
-                new Utf8String(to_account),
-                new Uint256(amount)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(from_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(to_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(amount)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -98,9 +98,9 @@ public class Asset_CNYK extends Contract {
     public String transferSeq(String from_account, String to_account, BigInteger amount) {
         final Function function = new Function(
                 FUNC_TRANSFER, 
-                Arrays.<Type>asList(new Utf8String(from_account),
-                new Utf8String(to_account),
-                new Uint256(amount)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(from_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(to_account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(amount)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -108,8 +108,8 @@ public class Asset_CNYK extends Contract {
     public RemoteCall<TransactionReceipt> register(String account, BigInteger asset_value) {
         final Function function = new Function(
                 FUNC_REGISTER, 
-                Arrays.<Type>asList(new Utf8String(account),
-                new Uint256(asset_value)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(asset_value)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -117,8 +117,8 @@ public class Asset_CNYK extends Contract {
     public void register(String account, BigInteger asset_value, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_REGISTER, 
-                Arrays.<Type>asList(new Utf8String(account),
-                new Uint256(asset_value)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(asset_value)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -126,15 +126,15 @@ public class Asset_CNYK extends Contract {
     public String registerSeq(String account, BigInteger asset_value) {
         final Function function = new Function(
                 FUNC_REGISTER, 
-                Arrays.<Type>asList(new Utf8String(account),
-                new Uint256(asset_value)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(account), 
+                new org.fisco.bcos.web3j.abi.datatypes.generated.Uint256(asset_value)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
 
     public RemoteCall<Tuple2<BigInteger, BigInteger>> select(String account) {
         final Function function = new Function(FUNC_SELECT, 
-                Arrays.<Type>asList(new Utf8String(account)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(account)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Int256>() {}, new TypeReference<Uint256>() {}));
         return new RemoteCall<Tuple2<BigInteger, BigInteger>>(
                 new Callable<Tuple2<BigInteger, BigInteger>>() {
@@ -149,9 +149,9 @@ public class Asset_CNYK extends Contract {
     }
 
     public List<RegisterEventEventResponse> getRegisterEventEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(REGISTEREVENT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(REGISTEREVENT_EVENT, transactionReceipt);
         ArrayList<RegisterEventEventResponse> responses = new ArrayList<RegisterEventEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             RegisterEventEventResponse typedResponse = new RegisterEventEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.ret = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -166,7 +166,7 @@ public class Asset_CNYK extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, RegisterEventEventResponse>() {
             @Override
             public RegisterEventEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(REGISTEREVENT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(REGISTEREVENT_EVENT, log);
                 RegisterEventEventResponse typedResponse = new RegisterEventEventResponse();
                 typedResponse.log = log;
                 typedResponse.ret = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -184,9 +184,9 @@ public class Asset_CNYK extends Contract {
     }
 
     public List<TransferEventEventResponse> getTransferEventEvents(TransactionReceipt transactionReceipt) {
-        List<EventValuesWithLog> valueList = extractEventParametersWithLog(TRANSFEREVENT_EVENT, transactionReceipt);
+        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(TRANSFEREVENT_EVENT, transactionReceipt);
         ArrayList<TransferEventEventResponse> responses = new ArrayList<TransferEventEventResponse>(valueList.size());
-        for (EventValuesWithLog eventValues : valueList) {
+        for (Contract.EventValuesWithLog eventValues : valueList) {
             TransferEventEventResponse typedResponse = new TransferEventEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.ret = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
@@ -202,7 +202,7 @@ public class Asset_CNYK extends Contract {
         return web3j.logFlowable(filter).map(new io.reactivex.functions.Function<Log, TransferEventEventResponse>() {
             @Override
             public TransferEventEventResponse apply(Log log) {
-                EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFEREVENT_EVENT, log);
+                Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFEREVENT_EVENT, log);
                 TransferEventEventResponse typedResponse = new TransferEventEventResponse();
                 typedResponse.log = log;
                 typedResponse.ret = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();

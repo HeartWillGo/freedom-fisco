@@ -6,7 +6,8 @@ contract UserInfo {
     // event
     event RegisterEvent(int256 ret, string user_id, string user_value);
     event TransferEvent(int256 ret, string from_account, string to_account, uint256 amount);
-    
+    event UpdateResult(int count);
+    event RemoveResult(int count);
     constructor() public {
         // 构造函数中创建t_user_info表
         createTable();
@@ -108,7 +109,18 @@ contract UserInfo {
         return ret_code;
     }
 
+    //remove records
+    function remove(string user_id) public returns(int){
+        Table table = openTable();
 
+        Condition condition = table.newCondition();
+        condition.EQ("user_id", user_id);
+
+        int count = table.remove(user_id, condition);
+        emit RemoveResult(count);
+
+        return count;
+    }
 
 
 }

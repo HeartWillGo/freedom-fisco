@@ -1,4 +1,4 @@
-package com.heartgo.demo.contract;
+package org.fisco.bcos.asset.contract;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -56,7 +56,7 @@ public class HelloWorld extends Contract {
     public RemoteCall<TransactionReceipt> set(String n) {
         final Function function = new Function(
                 FUNC_SET, 
-                Arrays.<Type>asList(new Utf8String(n)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(n)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -64,7 +64,7 @@ public class HelloWorld extends Contract {
     public void set(String n, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_SET, 
-                Arrays.<Type>asList(new Utf8String(n)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(n)), 
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -72,7 +72,7 @@ public class HelloWorld extends Contract {
     public String setSeq(String n) {
         final Function function = new Function(
                 FUNC_SET, 
-                Arrays.<Type>asList(new Utf8String(n)),
+                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Utf8String(n)), 
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }

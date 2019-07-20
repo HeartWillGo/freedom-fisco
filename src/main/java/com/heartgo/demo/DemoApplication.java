@@ -1,6 +1,7 @@
 package com.heartgo.demo;
 
 import com.heartgo.demo.client.AssetClient;
+import com.heartgo.demo.client.BankInfoClient;
 import com.heartgo.demo.client.UserInfoClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,5 +31,11 @@ public class DemoApplication {
         userInfoClient.deployAssetAndRecordAddr();
         return userInfoClient;
     }
-
+    @Bean
+    public BankInfoClient bankInfoClient ()throws Exception{
+        BankInfoClient bankInfoClient=new BankInfoClient();
+        bankInfoClient.initialize();
+        bankInfoClient.deployAssetAndRecordAddr();
+        return bankInfoClient;
+    }
 }
