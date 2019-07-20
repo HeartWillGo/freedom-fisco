@@ -1,15 +1,15 @@
 package com.heartgo.demo.model;
 
-public class Bind {
-    private String userId;
+public class Bank {
+    private String bankId;
     private String bankAccount;
 
-    public String getUserId() {
-        return userId;
+    public String getBankId() {
+        return bankId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
     }
 
     public String getBankAccount() {

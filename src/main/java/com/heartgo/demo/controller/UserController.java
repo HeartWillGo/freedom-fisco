@@ -45,7 +45,18 @@ public class UserController {
 
     @GetMapping("queryUser")
     public String queryUser(String userId) throws Exception {
-        return userService.queryUser(userId);
+        CommonResult res = new CommonResult();
+
+        String userinfo = userService.queryUser(userId);
+        if (null == userinfo || userinfo.isEmpty()) {
+            res.setCode(-1);
+            res.setMsg("user doesn't exist");
+
+        } else {
+            res.setCode(200);
+            res.setMsg(userinfo);
+        }
+        return JSON.toJSONString(res);
     }
 
     @PostMapping("login")
@@ -55,7 +66,7 @@ public class UserController {
         if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
             lgRes.setCode(-1);
             lgRes.setMsg("user or password is empty.");
-            return JSON.toJSON(lgRes).toString();
+            return JSON.toJSONString(lgRes);
         }
         String inUserId = user.getUserId();
         String inPassWord = user.getPassWord();
@@ -72,7 +83,7 @@ public class UserController {
         lgRes.setCode(200);
         lgRes.setMsg("login success.");
 
-        return JSON.toJSON(lgRes).toString();
+        return JSON.toJSONString(lgRes);
     }
 
 

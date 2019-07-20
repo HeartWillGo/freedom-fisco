@@ -129,8 +129,8 @@ public class UserInfoClient {
 			logger.error(" queryUserInfo exception, error message is {}", e.getMessage());
 
 			System.out.printf(" queryUserInfofailed, error message is %s\n", e.getMessage());
+			return null;
 		}
-		return null;
 	}
 
 	public void registerUser(String userId, User user) {

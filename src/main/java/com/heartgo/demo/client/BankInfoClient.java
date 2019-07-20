@@ -2,9 +2,10 @@ package com.heartgo.demo.client;
 
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.heartgo.demo.contract.BankInfo;
-import com.heartgo.demo.model.Bind;
+import com.heartgo.demo.model.Bank;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -133,41 +134,45 @@ public class BankInfoClient {
 		return null;
 	}
 
-	public void saveBankInfo(Bind bank) {
+	public boolean saveBankInfo(Bank bank) {
 		try {
 			String contractAddress = loadAssetAddr();
 
 			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 //			String userJson = JSON.toJSONString(user);
-			TransactionReceipt receipt = bankInfo.insert(bank.getUserId(),JSONObject.toJSONString(bank)).send();
-			System.out.println("receipt:"+JSONObject.toJSONString(receipt));
-
-			List<BankInfo.RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
-			if (!response.isEmpty()) {
-				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
-					System.out.printf(" registerUser success => asset: %s, value: %s \n");
-				} else {
-					System.out.printf(" registerUser failed, ret code is %s \n",
-							response.get(0).ret.toString());
-				}
-			} else {
-				System.out.println(" event log not found, maybe transaction not exec. ");
-			}
+			TransactionReceipt receipt = bankInfo.insert(bank.getBankId(), JSON.toJSONString(bank)).send();
+//			System.out.println("receipt:"+JSONObject.toJSONString(receipt));
+//
+//			List<BankInfo.RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
+//			if (!response.isEmpty()) {
+//				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
+//					System.out.printf(" registerUser success => asset: %s, value: %s \n");
+//					return true;
+//				} else {
+//					System.out.printf(" registerUser failed, ret code is %s \n",
+//							response.get(0).ret.toString());
+//					return false;
+//				}
+//			} else {
+//				System.out.println(" event log not found, maybe transaction not exec. ");
+				return true;
+//			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 
 			logger.error(" registerAssetAccount exception, error message is {}", e.getMessage());
 			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
+			return false;
 		}
 	}
-	public void updateBankAccount(Bind bank, Bind oldBank) {
+	public void updateBankAccount(Bank bank, Bank oldBank) {
 		try {
 			String contractAddress = loadAssetAddr();
 
 			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 //			String userJson = JSON.toJSONString(user);
-			TransactionReceipt receipt = bankInfo.updateBankAccount(bank.getUserId(), JSONObject.toJSONString(bank), JSONObject.toJSONString(oldBank)).send();
+			TransactionReceipt receipt = bankInfo.updateBankAccount(bank.getBankId(), JSONObject.toJSONString(bank), JSONObject.toJSONString(oldBank)).send();
 //			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
 //			if (!response.isEmpty()) {
 //				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
