@@ -99,7 +99,7 @@ public class AssetCNYClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			Asset asset = Asset.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
 
 			recordAssetAddr(asset.getContractAddress());
@@ -110,16 +110,16 @@ public class AssetCNYClient {
 		}
 	}
 
-	public void queryAssetAmount(String assetAccount) {
+	public long queryCNYK(String assetAccount) {
 		try {
 			String contractAddress = loadAssetAddr();
 
 			org.fisco.bcos.asset.contract.Asset_CNY asset = org.fisco.bcos.asset.contract.Asset_CNY.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, BigInteger> result = asset.select(assetAccount).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
-				System.out.printf(" asset account %s, value %s \n", assetAccount, result.getValue2());
+				return result.getValue2().longValue();
 			} else {
-				System.out.printf(" %s asset account is not exist \n", assetAccount);
+				return 0;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -128,6 +128,7 @@ public class AssetCNYClient {
 
 			System.out.printf(" query asset account failed, error message is %s\n", e.getMessage());
 		}
+		return 0;
 	}
 
 	public void registerAssetAccount(String assetAccount, BigInteger amount) {
@@ -232,14 +233,5 @@ public class AssetCNYClient {
 //
 //		System.exit(0);
 //	}
-public static void main(String[] args) throws Exception {
 
-
-	AssetCNYClient client = new AssetCNYClient();
-	client.initialize();
-	client.deployAssetAndRecordAddr();
-	client.registerAssetAccount("Alice3", new BigInteger("2322"));
-	client.queryAssetAmount("Alice3");
-
-}
 }

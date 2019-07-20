@@ -26,9 +26,9 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Properties;
 
-public class AssetCNYKClient {
+public class AssetDipostClient {
 
-	static Logger logger = LoggerFactory.getLogger(AssetCNYKClient.class);
+	static Logger logger = LoggerFactory.getLogger(AssetDipostClient.class);
 
 	private Web3j web3j;
 
@@ -52,7 +52,7 @@ public class AssetCNYKClient {
 
 	public void recordAssetAddr(String address) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		prop.setProperty("asset_cnyk_address", address);
+		prop.setProperty("dipost_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
 		prop.store(fileOutputStream, "contract address");
@@ -99,7 +99,7 @@ public class AssetCNYKClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			Asset_CNYK asset = Asset_CNYK.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			org.fisco.bcos.asset.contract.Asset_deposit asset = org.fisco.bcos.asset.contract.Asset_deposit.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
 
 			recordAssetAddr(asset.getContractAddress());
@@ -135,7 +135,7 @@ public class AssetCNYKClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.Asset_CNYK asset = org.fisco.bcos.asset.contract.Asset_CNYK.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_CNYK asset = Asset_CNYK.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.register(assetAccount, amount).send();
 			List<Asset_CNYK.RegisterEventEventResponse> response = asset.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {

@@ -1,13 +1,10 @@
 package com.heartgo.demo;
 
-import com.heartgo.demo.client.AssetClient;
-import com.heartgo.demo.client.BankInfoClient;
-import com.heartgo.demo.client.UserInfoClient;
+import com.heartgo.demo.client.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
 
 @SpringBootApplication
 public class DemoApplication {
@@ -37,5 +34,27 @@ public class DemoApplication {
         bankInfoClient.initialize();
         bankInfoClient.deployAssetAndRecordAddr();
         return bankInfoClient;
+    }
+
+    @Bean
+    public AssetDipostClient assetDipostClient ()throws Exception{
+        AssetDipostClient assetDipostClient=new AssetDipostClient();
+        assetDipostClient.initialize();
+        assetDipostClient.deployAssetAndRecordAddr();
+        return assetDipostClient;
+    }
+    @Bean
+    public AssetCNYClient assetCNYClient ()throws Exception{
+        AssetCNYClient assetCNYClient=new AssetCNYClient();
+        assetCNYClient.initialize();
+        assetCNYClient.deployAssetAndRecordAddr();
+        return assetCNYClient;
+    }
+    @Bean
+    public AssetCNYKClient assetCNYKClient ()throws Exception{
+        AssetCNYKClient assetCNYKClient=new AssetCNYKClient();
+        assetCNYKClient.initialize();
+        assetCNYKClient.deployAssetAndRecordAddr();
+        return assetCNYKClient;
     }
 }
