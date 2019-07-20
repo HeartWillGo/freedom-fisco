@@ -131,7 +131,7 @@ public class AssetCNYClient {
 		return 0;
 	}
 
-	public void registerAssetAccount(String assetAccount, BigInteger amount) {
+	public void saveCNYAccount(String assetAccount, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
 
