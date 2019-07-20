@@ -2,8 +2,7 @@ package com.heartgo.demo.client;
 
 
 
-import org.fisco.bcos.asset.contract.Asset;
-import org.fisco.bcos.asset.contract.Asset_CNYK;
+import com.heartgo.demo.contract.Asset_CNYK;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
