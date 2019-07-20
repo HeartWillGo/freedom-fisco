@@ -2,7 +2,7 @@ package com.heartgo.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.heartgo.demo.model.CommonResult;
+import com.heartgo.demo.model.BackendResult;
 import com.heartgo.demo.model.RESULT;
 import com.heartgo.demo.model.User;
 import com.heartgo.demo.service.UserService;
@@ -35,41 +35,37 @@ public class UserController {
     public String registUser(User user) throws Exception {
         // 参数校验
         if (isUserParamsEmpty(user)) {
-            return JSON.toJSONString(new CommonResult(EMPTY_USER_INFO));
+            return JSON.toJSONString(new BackendResult(USER_EMPTY_INFO));
         }
 
         RESULT res = userService.registerUser(user);
-
-        if (res != RESULT.OK) {
-            return JSON.toJSONString(new CommonResult(res));
-        }
-        return JSON.toJSONString(new CommonResult(OK));
+        return JSON.toJSONString(new BackendResult(res));
     }
 
     @PostMapping("login")
     public String loginUser(User user) throws Exception {
         if (isUserParamsEmpty(user)) {
-            return JSON.toJSONString(new CommonResult(EMPTY_USER_INFO));
+            return JSON.toJSONString(new BackendResult(USER_EMPTY_INFO));
         }
         String inUserId = user.getUserId();
         String inPassWord = user.getPassWord();
         String userInfStr = userService.queryUser(inUserId);
         if (null == userInfStr || userInfStr.isEmpty()) {
-            return JSON.toJSONString(new CommonResult(USER_NOT_EXIST));
+            return JSON.toJSONString(new BackendResult(USER_NOT_EXIST));
         }
 
         String truePwd = JSON.parseObject(userInfStr).getString("passWord");
 
         //正确性校验
         if (!inPassWord.equals(truePwd)) {
-            return JSON.toJSONString(new CommonResult(USER_PASSWORD_INCRRECT));
+            return JSON.toJSONString(new BackendResult(USER_PASSWORD_INCRRECT));
         }
-        return JSON.toJSONString(new CommonResult(OK));
+        return JSON.toJSONString(new BackendResult(OK));
     }
 
     @GetMapping("queryUser")
     public String queryUser(String userId) throws Exception {
-        CommonResult res = new CommonResult();
+        BackendResult res = new BackendResult();
 
         String userinfo = userService.queryUser(userId);
         if (null == userinfo || userinfo.isEmpty()) {

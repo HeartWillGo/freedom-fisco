@@ -1,12 +1,16 @@
 package com.heartgo.demo.model;
 
-public class CommonResult {
+
+/**
+ * 前后台交互错误码,内容可以灵活添加,也可以直接由 RESULT 构造
+ */
+public class BackendResult {
     private int code;
     private String msg;
 
-    public CommonResult(){}
+    public BackendResult(){}
 
-    public CommonResult(RESULT res) {
+    public BackendResult(RESULT res) {
         this.code = res.getCode();
         this.setMsg(res.getDescription());
     }

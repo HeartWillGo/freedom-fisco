@@ -1,11 +1,10 @@
 package com.heartgo.demo.model;
 
-public class User
-{
+public class User {
     private String userId;
     private String userPhone;
     private String userName;
-    private String passWord; //密码
+    private String passWord;
 
 
     public String getUserId() {
