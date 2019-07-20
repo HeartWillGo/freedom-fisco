@@ -2,6 +2,7 @@ package com.heartgo.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.heartgo.demo.client.AssetClient;
 import com.heartgo.demo.client.UserInfoClient;
 import com.heartgo.demo.model.User;
@@ -47,19 +48,29 @@ public class UserController {
 
     @PostMapping("login")
     public String loginUser(User user) throws Exception {
+        LoginResult lgRes = new LoginResult();
+        // 存在性校验
         if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
-            LoginResult lgRes = new LoginResult();
             lgRes.setCode(-1);
             lgRes.setMsg("user or password is empty.");
             return JSON.toJSON(lgRes).toString();
         }
-        String userId = user.getUserId();
-        String passWord = user.getPassWord();
+        String inUserId = user.getUserId();
+        String inPassWord = user.getPassWord();
 
+        JSONObject userInfo = JSON.parseObject(userInfoClient.queryUserInfo(inUserId));
+        String truePwd = userInfo.getString("passWord");
+        //正确性校验
+        if (!inPassWord.equals(truePwd)) {
+            lgRes.setCode(-2);
+            lgRes.setMsg("user password is incorrect.");
+            return JSON.toJSON(lgRes).toString();
+        }
 
+        lgRes.setCode(200);
+        lgRes.setMsg("login success.");
 
-        return "success";
-
+        return JSON.toJSON(lgRes).toString();
     }
 
     class LoginResult {
