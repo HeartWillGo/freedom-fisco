@@ -1,4 +1,4 @@
-package org.fisco.bcos.asset.contract;
+package com.heartgo.demo.contract;
 
 import java.math.BigInteger;
 import java.util.Arrays;

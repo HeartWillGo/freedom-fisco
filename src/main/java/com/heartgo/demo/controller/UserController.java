@@ -3,28 +3,20 @@ package com.heartgo.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.heartgo.demo.client.AssetClient;
-import com.heartgo.demo.client.UserInfoClient;
+import com.heartgo.demo.model.CommonResult;
 import com.heartgo.demo.model.User;
 import com.heartgo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigInteger;
-import java.util.HashMap;
 
 
 @RestController
 @RequestMapping(value = "", produces = "application/json")
 public class UserController {
 
-
-    @Autowired
-    private UserInfoClient userInfoClient;
 
     @Autowired
     private UserService userService;
@@ -38,28 +30,27 @@ public class UserController {
      */
     @PostMapping("registUser")
     public String registUser(User user) throws Exception {
-        if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty())
-            return "failed";
-        user.setUserPhone(user.getUserId());
-        user.setIdCard(userService.getUUID());
-        user.setBankId(userService.getUUID());
-        user.setCNYID(userService.getUUID());
-        user.setCNYKID(userService.getUUID());
-        user.setDepositID(userService.getUUID());
-        userInfoClient.registerUser(user.getUserId(), user);
+        CommonResult res = new CommonResult();
+        if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
+            res.setCode(-1);
+            res.setMsg("userId or passord is empty.");
+            return JSON.toJSONString(res);
+        }
 
-        return "success";
-
+        userService.registerUser(user);
+        res.setCode(200);
+        res.setMsg("success");
+        return JSON.toJSONString(res);
     }
 
     @GetMapping("queryUser")
     public String queryUser(String userId) throws Exception {
-        return userInfoClient.queryUserInfo(userId);
+        return userService.queryUser(userId);
     }
 
     @PostMapping("login")
     public String loginUser(User user) throws Exception {
-        LoginResult lgRes = new LoginResult();
+        CommonResult lgRes = new CommonResult();
         // 存在性校验
         if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
             lgRes.setCode(-1);
@@ -69,7 +60,7 @@ public class UserController {
         String inUserId = user.getUserId();
         String inPassWord = user.getPassWord();
 
-        JSONObject userInfo = JSON.parseObject(userInfoClient.queryUserInfo(inUserId));
+        JSONObject userInfo = JSON.parseObject(userService.queryUser(inUserId));
         String truePwd = userInfo.getString("passWord");
         //正确性校验
         if (!inPassWord.equals(truePwd)) {
@@ -82,27 +73,6 @@ public class UserController {
         lgRes.setMsg("login success.");
 
         return JSON.toJSON(lgRes).toString();
-    }
-
-    class LoginResult {
-        private int Code;
-        private String msg;
-
-        public int getCode() {
-            return Code;
-        }
-
-        public void setCode(int code) {
-            Code = code;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
     }
 
 

@@ -53,7 +53,7 @@ public class AssetCNYClient {
 		Properties prop = new Properties();
 		prop.setProperty("asset_cny_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
-		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
+		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile(),true);
 		prop.store(fileOutputStream, "contract address");
 	}
 
@@ -63,7 +63,7 @@ public class AssetCNYClient {
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		prop.load(contractResource.getInputStream());
 
-		String contractAddress = prop.getProperty("address");
+		String contractAddress = prop.getProperty("asset_cny_address");
 		if (contractAddress == null || contractAddress.trim().equals("")) {
 			throw new Exception(" load Asset contract address failed, please deploy it first. ");
 		}

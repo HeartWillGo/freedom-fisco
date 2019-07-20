@@ -4,13 +4,9 @@ public class User
 {
     private String userId;
     private String userPhone;
-    private String idCard;
     private String userName;
     private String passWord; //密码
-    private String bankId;   //银行卡数据的ID
-    private String CNYKID;    //CNYK账户Id
-    private String CNYID;    //CNY账户Id
-    private String depositID;    //CNY账户Id
+
 
     public String getUserId() {
         return userId;
@@ -28,13 +24,6 @@ public class User
         this.userPhone = userPhone;
     }
 
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
-    }
 
     public String getUserName() {
         return userName;
@@ -50,37 +39,5 @@ public class User
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
-    }
-
-    public String getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(String bankId) {
-        this.bankId = bankId;
-    }
-
-    public String getCNYKID() {
-        return CNYKID;
-    }
-
-    public void setCNYKID(String CNYKID) {
-        this.CNYKID = CNYKID;
-    }
-
-    public String getCNYID() {
-        return CNYID;
-    }
-
-    public void setCNYID(String CNYID) {
-        this.CNYID = CNYID;
-    }
-
-    public String getDepositID() {
-        return depositID;
-    }
-
-    public void setDepositID(String depositID) {
-        this.depositID = depositID;
     }
 }

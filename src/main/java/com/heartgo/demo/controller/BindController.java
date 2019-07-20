@@ -2,33 +2,29 @@ package com.heartgo.demo.controller;
 
 
 import com.heartgo.demo.client.BankInfoClient;
-import com.heartgo.demo.client.UserInfoClient;
-import com.heartgo.demo.model.Bank;
-import com.heartgo.demo.model.User;
+import com.heartgo.demo.model.Bind;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping(value = "", produces = "application/json")
-public class BankController {
+public class BindController {
 
     @Autowired
     private BankInfoClient bankInfoClient;
 
-    @PostMapping("saveBank")
-    public void saveBank(@RequestBody Bank bank) throws Exception{
+    @PostMapping("saveBind")
+    public void saveBank(@RequestBody Bind bind) throws Exception{
 
-        bankInfoClient.saveBankInfo(bank);
+        bankInfoClient.saveBankInfo(bind);
 
     }
 
-    @GetMapping("queryBank")
+    @GetMapping("queryBind")
     public String queryUser(String bankId) throws Exception{
         return  bankInfoClient.queryBankInfo(bankId);
 
     }
-
-
 
 }

@@ -2,19 +2,16 @@ package com.heartgo.demo.client;
 
 
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.heartgo.demo.model.Bank;
-import com.heartgo.demo.model.User;
+import com.heartgo.demo.contract.BankInfo;
+import com.heartgo.demo.model.Bind;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
 import org.fisco.bcos.web3j.protocol.Web3j;
 import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
-import org.fisco.bcos.web3j.protocol.core.JsonRpc2_0Web3j;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tuples.generated.Tuple2;
-import org.fisco.bcos.web3j.tuples.generated.Tuple3;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +19,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.fisco.bcos.asset.contract.BankInfo.RegisterEventEventResponse;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,7 +55,7 @@ public class BankInfoClient {
 		Properties prop = new Properties();
 		prop.setProperty("bankInfo_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
-		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
+		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile(),true);
 		prop.store(fileOutputStream, "bankInfo address");
 	}
 
@@ -69,7 +65,7 @@ public class BankInfoClient {
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		prop.load(contractResource.getInputStream());
 
-		String contractAddress = prop.getProperty("user_info_address");
+		String contractAddress = prop.getProperty("bankInfo_address");
 		if (contractAddress == null || contractAddress.trim().equals("")) {
 			throw new Exception(" load Asset contract address failed, please deploy it first. ");
 		}
@@ -104,7 +100,7 @@ public class BankInfoClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-		    org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+		    BankInfo bankInfo = BankInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + bankInfo.getContractAddress());
 
 			recordAssetAddr(bankInfo.getContractAddress());
@@ -119,7 +115,7 @@ public class BankInfoClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, String> result = bankInfo.select(bankId).send();
 			System.out.println("result:"+JSONObject.toJSONString(result));
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
@@ -137,16 +133,16 @@ public class BankInfoClient {
 		return null;
 	}
 
-	public void saveBankInfo(Bank bank) {
+	public void saveBankInfo(Bind bank) {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 //			String userJson = JSON.toJSONString(user);
-			TransactionReceipt receipt = bankInfo.insert(bank.getBankId(),JSONObject.toJSONString(bank)).send();
+			TransactionReceipt receipt = bankInfo.insert(bank.getUserId(),JSONObject.toJSONString(bank)).send();
 			System.out.println("receipt:"+JSONObject.toJSONString(receipt));
 
-			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
+			List<BankInfo.RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" registerUser success => asset: %s, value: %s \n");
@@ -165,13 +161,13 @@ public class BankInfoClient {
 			System.out.printf(" register asset account failed, error message is %s\n", e.getMessage());
 		}
 	}
-	public void updateBankAccount(Bank bank,Bank oldBank) {
+	public void updateBankAccount(Bind bank, Bind oldBank) {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 //			String userJson = JSON.toJSONString(user);
-			TransactionReceipt receipt = bankInfo.updateBankAccount(bank.getBankId(), JSONObject.toJSONString(bank), JSONObject.toJSONString(oldBank)).send();
+			TransactionReceipt receipt = bankInfo.updateBankAccount(bank.getUserId(), JSONObject.toJSONString(bank), JSONObject.toJSONString(oldBank)).send();
 //			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);
 //			if (!response.isEmpty()) {
 //				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
@@ -196,7 +192,7 @@ public class BankInfoClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			org.fisco.bcos.asset.contract.BankInfo bankInfo = org.fisco.bcos.asset.contract.BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 //			String userJson = JSON.toJSONString(user);
 			TransactionReceipt receipt = bankInfo.remove(bankId).send();
 //			List<RegisterEventEventResponse> response = bankInfo.getRegisterEventEvents(receipt);

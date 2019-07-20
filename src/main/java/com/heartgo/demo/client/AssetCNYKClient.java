@@ -53,7 +53,7 @@ public class AssetCNYKClient {
 		Properties prop = new Properties();
 		prop.setProperty("asset_cnyk_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
-		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
+		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile(),true);
 		prop.store(fileOutputStream, "contract address");
 	}
 

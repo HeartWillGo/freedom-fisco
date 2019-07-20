@@ -1,11 +1,23 @@
 package com.heartgo.demo.service;
 
-import java.util.UUID;
+import com.heartgo.demo.client.UserInfoClient;
+import com.heartgo.demo.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserService {
-    public String getUUID()
+
+    @Autowired
+    private UserInfoClient userInfoClient;
+
+
+    public void registerUser(User user)
     {
-        return UUID.randomUUID().toString();
+        user.setUserPhone(user.getUserId());
+        userInfoClient.registerUser(user.getUserId(), user);
+
     }
 
+    public String queryUser(String userId) {
+        return userInfoClient.queryUserInfo(userId);
+    }
 }

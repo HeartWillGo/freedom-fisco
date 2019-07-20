@@ -1,9 +1,7 @@
 package com.heartgo.demo.client;
 
 
-
-import jnr.ffi.Struct;
-import org.fisco.bcos.asset.contract.Asset;
+import com.heartgo.demo.contract.Asset;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -52,9 +50,9 @@ public class AssetClient {
 
 	public void recordAssetAddr(String address) throws FileNotFoundException, IOException {
 		Properties prop = new Properties();
-		prop.setProperty("address", address);
+		prop.setProperty("Asset_address", address);
 		final Resource contractResource = new ClassPathResource("contract.properties");
-		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile());
+		FileOutputStream fileOutputStream = new FileOutputStream(contractResource.getFile(),true);
 		prop.store(fileOutputStream, "contract address");
 	}
 
@@ -64,7 +62,7 @@ public class AssetClient {
 		final Resource contractResource = new ClassPathResource("contract.properties");
 		prop.load(contractResource.getInputStream());
 
-		String contractAddress = prop.getProperty("address");
+		String contractAddress = prop.getProperty("Asset_address");
 		if (contractAddress == null || contractAddress.trim().equals("")) {
 			throw new Exception(" load Asset contract address failed, please deploy it first. ");
 		}

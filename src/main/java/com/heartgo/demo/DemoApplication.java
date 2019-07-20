@@ -7,12 +7,23 @@ import com.heartgo.demo.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 @SpringBootApplication
 public class DemoApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        final Resource contractResource = new ClassPathResource("contract.properties");
+        FileWriter fileWriter =new FileWriter(contractResource.getFile());
+        fileWriter.write("");
+        fileWriter.close();
         SpringApplication.run(DemoApplication.class, args);
     }
 
