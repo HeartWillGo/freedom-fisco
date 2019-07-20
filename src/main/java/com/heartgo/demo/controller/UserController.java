@@ -2,8 +2,8 @@ package com.heartgo.demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.heartgo.demo.model.CommonResult;
+import com.heartgo.demo.model.RESULT;
 import com.heartgo.demo.model.User;
 import com.heartgo.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.heartgo.demo.model.RESULT.*;
 
 
 @RestController
@@ -21,8 +23,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     /**
-     * 注册用户,提供: 1. 账号  2. 密码
+     * 用户注册
      *
      * @param user
      * @return
@@ -30,17 +33,38 @@ public class UserController {
      */
     @PostMapping("registUser")
     public String registUser(User user) throws Exception {
-        CommonResult res = new CommonResult();
-        if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
-            res.setCode(-1);
-            res.setMsg("userId or passord is empty.");
-            return JSON.toJSONString(res);
+        // 参数校验
+        if (isUserParamsEmpty(user)) {
+            return JSON.toJSONString(new CommonResult(EMPTY_USER_INFO));
         }
 
-        userService.registerUser(user);
-        res.setCode(200);
-        res.setMsg("success");
-        return JSON.toJSONString(res);
+        RESULT res = userService.registerUser(user);
+
+        if (res != RESULT.OK) {
+            return JSON.toJSONString(new CommonResult(res));
+        }
+        return JSON.toJSONString(new CommonResult(OK));
+    }
+
+    @PostMapping("login")
+    public String loginUser(User user) throws Exception {
+        if (isUserParamsEmpty(user)) {
+            return JSON.toJSONString(new CommonResult(EMPTY_USER_INFO));
+        }
+        String inUserId = user.getUserId();
+        String inPassWord = user.getPassWord();
+        String userInfStr = userService.queryUser(inUserId);
+        if (null == userInfStr || userInfStr.isEmpty()) {
+            return JSON.toJSONString(new CommonResult(USER_NOT_EXIST));
+        }
+
+        String truePwd = JSON.parseObject(userInfStr).getString("passWord");
+
+        //正确性校验
+        if (!inPassWord.equals(truePwd)) {
+            return JSON.toJSONString(new CommonResult(USER_PASSWORD_INCRRECT));
+        }
+        return JSON.toJSONString(new CommonResult(OK));
     }
 
     @GetMapping("queryUser")
@@ -59,32 +83,17 @@ public class UserController {
         return JSON.toJSONString(res);
     }
 
-    @PostMapping("login")
-    public String loginUser(User user) throws Exception {
-        CommonResult lgRes = new CommonResult();
-        // 存在性校验
-        if (null == user.getUserId() || user.getUserId().isEmpty() || null == user.getPassWord() || user.getPassWord().isEmpty()) {
-            lgRes.setCode(-1);
-            lgRes.setMsg("user or password is empty.");
-            return JSON.toJSONString(lgRes);
-        }
-        String inUserId = user.getUserId();
-        String inPassWord = user.getPassWord();
 
-        JSONObject userInfo = JSON.parseObject(userService.queryUser(inUserId));
-        String truePwd = userInfo.getString("passWord");
-        //正确性校验
-        if (!inPassWord.equals(truePwd)) {
-            lgRes.setCode(-2);
-            lgRes.setMsg("user password is incorrect.");
-            return JSON.toJSON(lgRes).toString();
-        }
-
-        lgRes.setCode(200);
-        lgRes.setMsg("login success.");
-
-        return JSON.toJSONString(lgRes);
+    /**
+     * 参数校验
+     *
+     * @param user
+     * @return
+     */
+    private boolean isUserParamsEmpty(User user) {
+        return (null == user.getUserId() ||
+                user.getUserId().isEmpty() ||
+                null == user.getPassWord() ||
+                user.getPassWord().isEmpty());
     }
-
-
 }

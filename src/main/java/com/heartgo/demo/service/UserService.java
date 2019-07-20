@@ -1,6 +1,7 @@
 package com.heartgo.demo.service;
 
 import com.heartgo.demo.client.UserInfoClient;
+import com.heartgo.demo.model.RESULT;
 import com.heartgo.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,11 +11,8 @@ public class UserService {
     private UserInfoClient userInfoClient;
 
 
-    public void registerUser(User user)
-    {
-        user.setUserPhone(user.getUserId());
-        userInfoClient.registerUser(user.getUserId(), user);
-
+    public RESULT registerUser(User user) {
+        return userInfoClient.registerUser(user);
     }
 
     public String queryUser(String userId) {

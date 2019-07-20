@@ -3,9 +3,9 @@ package com.heartgo.demo.model;
 public class TransationInfo {
     private String fromId;
     private String toId;
-    private int action;
-    private int acountType;
-    private long amount;
+    private Integer action;
+    private Integer acountType;
+    private Long amount;
 
     public String getFromId() {
         return fromId;
@@ -23,27 +23,27 @@ public class TransationInfo {
         this.toId = toId;
     }
 
-    public int getAction() {
+    public Integer getAction() {
         return action;
     }
 
-    public void setAction(int action) {
+    public void setAction(Integer action) {
         this.action = action;
     }
 
-    public int getAcountType() {
+    public Integer getAcountType() {
         return acountType;
     }
 
-    public void setAcountType(int acountType) {
+    public void setAcountType(Integer acountType) {
         this.acountType = acountType;
     }
 
-    public long getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }
