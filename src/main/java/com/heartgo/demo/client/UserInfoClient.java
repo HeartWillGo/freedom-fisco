@@ -3,7 +3,6 @@ package com.heartgo.demo.client;
 
 
 import com.alibaba.fastjson.JSON;
-import com.heartgo.demo.contract.UserInfo;
 import com.heartgo.demo.model.User;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
@@ -100,7 +99,7 @@ public class UserInfoClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			UserInfo asset = UserInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			org.fisco.bcos.asset.contract.UserInfo asset = org.fisco.bcos.asset.contract.UserInfo.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
 
 			recordAssetAddr(asset.getContractAddress());
@@ -115,7 +114,7 @@ public class UserInfoClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			UserInfo userInfo = UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			org.fisco.bcos.asset.contract.UserInfo userInfo = org.fisco.bcos.asset.contract.UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			Tuple2<BigInteger, String> result = userInfo.select(userId).send();
 			if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
 				System.out.printf(" UserInfot %s, value %s \n", userId, result.getValue2());
@@ -137,10 +136,10 @@ public class UserInfoClient {
 		try {
 			String contractAddress = loadAssetAddr();
 
-			UserInfo userInfo = UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			org.fisco.bcos.asset.contract.UserInfo userInfo = org.fisco.bcos.asset.contract.UserInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			String userJson = JSON.toJSONString(user);
 			TransactionReceipt receipt = userInfo.insert(userId, userJson).send();
-			List<UserInfo.RegisterEventEventResponse> response = userInfo.getRegisterEventEvents(receipt);
+			List<org.fisco.bcos.asset.contract.UserInfo.RegisterEventEventResponse> response = userInfo.getRegisterEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 					System.out.printf(" registerUser success => asset: %s, value: %s \n", userId,

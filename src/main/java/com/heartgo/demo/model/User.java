@@ -6,7 +6,11 @@ public class User
     private String userPhone;
     private String idCard;
     private String userName;
-    private String passWord;
+    private String passWord; //密码
+    private String bankId;   //银行卡数据的ID
+    private String CNYKID;    //CNYK账户Id
+    private String CNYID;    //CNY账户Id
+    private String depositID;    //CNY账户Id
 
     public String getUserId() {
         return userId;
