@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 人民币账户 service
  */
-public class AssetCNYCService {
+public class AssetCNYService {
     @Autowired
-    private AssetCNYCService assetCNYCService;
+    private AssetCNYService assetCNYCService;
+
 
 
 }

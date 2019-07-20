@@ -9,7 +9,4 @@ public class AssetCNYKService {
     @Autowired
     private AssetCNYKService assetCNYKService;
 
-
-
-
 }
