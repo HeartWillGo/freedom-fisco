@@ -53,7 +53,7 @@ public class AdminActionController {
     @GetMapping("center")
     public String mycenter(HashMap<String, Object> map) {
 //        map.put("hello", "欢迎进入HTML页面");
-        return "/myCenter";
+        return "/cnykCenter";
     }
 
 
