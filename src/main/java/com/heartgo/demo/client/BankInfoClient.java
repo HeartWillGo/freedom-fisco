@@ -121,10 +121,10 @@ public class BankInfoClient {
             BankInfo bankInfo = BankInfo.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
             Tuple2<BigInteger, String> result = bankInfo.select(bankId).send();
             System.out.println("result:" + JSONObject.toJSONString(result));
-            if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
-                return null;
-            }
-            return (Bank) JSON.parse(result.getValue2());
+//            if (result.getValue1().compareTo(new BigInteger("0")) == 0) {
+//                return null;
+//            }
+            return JSON.parseObject(result.getValue2(),Bank.class);
 
         } catch (Exception e) {
             logger.error(" queryUserInfo exception, error message is {}", e.getMessage());
