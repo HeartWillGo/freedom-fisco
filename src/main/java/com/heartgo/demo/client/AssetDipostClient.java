@@ -3,6 +3,7 @@ package com.heartgo.demo.client;
 
 
 import com.heartgo.demo.contract.Asset_CNYK;
+import com.heartgo.demo.contract.Asset_deposit;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.crypto.Keys;
@@ -98,7 +99,7 @@ public class AssetDipostClient {
 	public void deployAssetAndRecordAddr() {
 
 		try {
-			org.fisco.bcos.asset.contract.Asset_deposit asset = org.fisco.bcos.asset.contract.Asset_deposit.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
+			Asset_deposit asset = Asset_deposit.deploy(web3j, credentials, new StaticGasProvider(gasPrice, gasLimit)).send();
 			System.out.println(" deploy Asset success, contract address is " + asset.getContractAddress());
 
 			recordAssetAddr(asset.getContractAddress());
@@ -185,9 +186,9 @@ public class AssetDipostClient {
 	public void update(String accountId, BigInteger amount) {
 		try {
 			String contractAddress = loadAssetAddr();
-			org.fisco.bcos.asset.contract.Asset_deposit asset = org.fisco.bcos.asset.contract.Asset_deposit.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
+			Asset_deposit asset = Asset_deposit.load(contractAddress, web3j, credentials, new StaticGasProvider(gasPrice, gasLimit));
 			TransactionReceipt receipt = asset.update(accountId,  amount).send();
-			List<org.fisco.bcos.asset.contract.Asset_deposit.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
+			List<Asset_deposit.TransferEventEventResponse> response = asset.getTransferEventEvents(receipt);
 			if (!response.isEmpty()) {
 				if (response.get(0).ret.compareTo(new BigInteger("0")) == 0) {
 
